@@ -1,53 +1,70 @@
-# Модуль для загрузки справочников городов и улиц
-# API KLADR https://dev.dellin.ru/api/catalogs/places/
+"""Модуль для загрузки справочников городов и улиц.
 
-import requests
-import pandas as pd
-import json
-import auth
+API KLADR https://dev.dellin.ru/api/catalogs/places/
+"""
+
+import json             # Работа с JSON
+import pandas as pd     # Таблицы и фильтры
+import requests         # HTTP-запросы
+from auth import auth   # Регистрационные данные
 
 
 class KladrLoader:
-    """Загружает справочники городов и улиц
-    через API dllin
-    """
+    """Загружает справочники городов и улиц через API dellin"""
 
-    headers = {
-        'Content-Type': 'application/json'
-    }
+    def __init__(self, access_token: str):
+        self.access_token = access_token
 
-    payload_link = f'''{{
-        "appkey": "{auth.appkey_dellin}"
-    }}'''
+        self.headers = {
+            'Content-Type': 'application/json'
+        }
 
-    def cities_loader(self):
+        self.payload_link = f'''{{
+            "appkey": "{self.access_token}"
+        }}'''
+
+    def cities_loader(self) -> pd.DataFrame:
         """Загружает справочник городов"""
+
         response_cities = requests.request(
-            'POST', auth.url_cities,
+            'POST', 'https://api.dellin.ru/v1/public/places.json',
             headers=self.headers, data=self.payload_link
         )
         csv_link = json.loads(response_cities.text.encode('utf8'))
         print('Загрузка каталога городов')
         cities = pd.read_csv(csv_link['url'])
-        print('Сохранение каталога городов')
-        cities.to_csv('cities.csv')
-        print('Выполнено')
+        return cities
 
-    def streets_loader(self):
+    def streets_loader(self) -> pd.DataFrame:
         """Загружает справочник улиц"""
+
         response_str = requests.request(
-            'POST', auth.url_str,
+            'POST', 'https://api.dellin.ru/v1/public/streets.json',
             headers=self.headers, data=self.payload_link
         )
         csv_link = json.loads(response_str.text.encode('utf8'))
         print('Загрузка каталога улиц')
         streets = pd.read_csv(csv_link['url'])
-        print('Сохранение каталога улиц')
-        streets.to_csv('streets.csv')
-        print('Выполнено')
+        return streets
+
+    def merge_table(self) -> pd.DataFrame:
+        """Объединяет таблицы улиц и городов в единую таблицу"""
+
+        streets = self.streets_loader()
+        cities = self.cities_loader()
+        print('Объединение каталогов')
+        catalog = streets.merge(cities, how='left', on='cityID')
+        print('Сохранение общего каталога')
+        catalog.to_csv('Catalog.csv')
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
-    DirLoader().cities_loader()
-    DirLoader().streets_loader()
+    # Регистрационные данные для сервиса
+    DELLIN_TOKEN = auth.dellin_token
+
+    # Создание экземпляра класса
+    kl = KladrLoader(DELLIN_TOKEN)
+
+    # Загрузка и сохранение справочника
+    kl.merge_table()
