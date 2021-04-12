@@ -48,7 +48,7 @@ class KladrLoader:
         return streets
 
     def merge_table(self) -> pd.DataFrame:
-        """Объединяет таблицы улиц и городов в единую таблицу"""
+        """Объединяет таблицы улиц и городов в единую таблицу."""
 
         streets = self.streets_loader()
         cities = self.cities_loader()
