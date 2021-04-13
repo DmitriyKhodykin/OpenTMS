@@ -18,20 +18,43 @@ class Optimizer:
     """Решает оптимизационную транспортную задачу.
     """
 
-    def __init__(self, geo_points):
-        self.geo_points = geo_points
+    def __init__(self, access_token: str, orders: pd.DataFrame):
+        self.access_token = access_token
+        self.orders = orders
 
-    def get_map_route(self):
+    def get_map_coordinates(self) -> list:
+        """Возвращает список координат географических точек
+        из заказов на перевозку.
+        """
+        # Определение координат точек
+        coordinates_list: list = []
+        # Экземпляр класа геокодировщика
+        gc = Geocoding(self.access_token)
+        # Последовательное прямое геокодирование адресов
+        for index, row in self.orders.iterrows():
+            lat_lng = gc.get_coordinates(row['adress'])
+            coordinates: tuple = (
+                lat_lng[0],
+                lat_lng[1]
+            )
+            coordinates_list.append(coordinates)
+
+        return coordinates_list
+
+    def get_map_route(self) -> list:
         """Возвращает лучший путь обхода точек, заданных гео-координатами.
         """
-        fitness_coordinates = mlrose.TravellingSales(coords=self.geo_points)
-
+        # Получение списка геоточек (широта и долгота) каждого заказа
+        geo_points = self.get_map_coordinates()
+        # Инициализация класса для задачи коммивояжера
+        fitness_coordinates = mlrose.TravellingSales(coords=geo_points)
+        # Формализация задачи
         problem_fit = mlrose.TSPOpt(
-            length=len(self.geo_points),
+            length=len(geo_points),
             fitness_fn=fitness_coordinates,
             maximize=False
         )
-
+        # Применение оптимизационного алгоритма с гипер-параметрами
         best_state, _ = mlrose.genetic_alg(
             problem_fit,
             pop_size=200,
@@ -43,39 +66,35 @@ class Optimizer:
 
         return best_state
 
+    def get_reindex_orders(self) -> pd.DataFrame:
+        """Возвращает отражированный в опорядке оптимального
+        обхода список географических точек для выполнения заказов.
+        """
+        self.orders['coordinates_list']  = self.get_map_coordinates()
+        # Получение списка обхода геоточек
+        order_route = self.get_map_route()
+        # Ранжирование заказов в порядке исполнения
+        reindex_orders = self.orders.reindex(index=order_route)
+
+        return reindex_orders
+
 
 if __name__ == "__main__":
 
-    ORDER = pd.DataFrame(
+    first_order = pd.DataFrame(
         {
-            'city': [
-                'Россия, Воронеж',
-                'Россия, Саратов',
-                'Россия, Москва',
-                'Россия, Рязань',
-                'Росиия, Казань'
+            'adress': [
+                'Россия, Москва, Волоколамское шоссе, 3',
+                'Россия, Москва, Рязанский проспект, 30',
+                'Россия, Москва, Люсиновская улица, 20',
+                'Россия, Москва, Ленинградское шоссе, 25',
+                'Россия, Москва, Улица Свободы, 19'
             ]
         }
     )
 
-    # Регистрационные данные для сервиса
-    MAPBOX_TOKEN: str = auth.mapbox_token
+    opt = Optimizer(auth.mapbox_token, first_order)
 
-    # Определение координат точек
-    coordinates_list: list = []
-    gc = Geocoding(MAPBOX_TOKEN)
+    result: pd.DataFrame = opt.get_reindex_orders()
 
-    for index, row in ORDER.iterrows():
-        lat_lng = gc.get_coordinates(str(row))
-        coordinates: tuple = (
-            lat_lng[0],
-            lat_lng[1]
-        )
-
-        coordinates_list.append(coordinates)
-
-    print(coordinates_list)
-
-    order_opt = Optimizer(coordinates_list)
-
-    print(order_opt.get_map_route())
+    print(result)
