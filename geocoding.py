@@ -1,6 +1,13 @@
-"""Модуль для решения задачи геокодирования.
+"""Модуль геокодирования.
 
-Также модуль определяет расстояние между геоточками.
+Прямая задача геокодирования - получение координат (широта и долгота)
+географической точки по ее наименованию. Для решения этой задачи используется
+сервис: https://www.mapbox.com/
+
+После регистрации в сервисе (в личном кабинете) доступен token, который
+является обязательным для передачи во всех запросах к сервису.
+
+Описание API для доступа к сервису: https://docs.mapbox.com/api/overview/
 """
 
 import json             # Работа с JSON
@@ -24,10 +31,12 @@ class Geocoding:
         r = requests.get(
             f'https://api.mapbox.com/geocoding/v5/mapbox.places/{point}'
             f'.json?limit=2&access_token={self.access_token}').text
+
         response = json.loads(r)
         geo_point = response['features'][0]['center']
         lng = geo_point[0]
         lat = geo_point[1]
+
         return [lat, lng]
 
     def distance_mapbox(self, point1: str, point2: str,
@@ -44,11 +53,14 @@ class Geocoding:
         geo_1: str = f'{coords1[1]},{coords1[0]}'  # Понятный сервису формат
         coords2: list = self.get_coordinates(point2)
         geo_2: str = f'{coords2[1]},{coords2[0]}'
+
         r = requests.get(
             f'https://api.mapbox.com/directions/v5/mapbox/{profile}/{geo_1};'
             f'{geo_2}?access_token={self.access_token}').text
+
         response = json.loads(r)
         distance = int(response['routes'][0]['distance']) // 1000
+
         return distance
 
 
