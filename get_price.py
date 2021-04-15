@@ -1,12 +1,13 @@
 """Модуль для получения стоимости рейса для сборного груза.
 
-Описание методов API для работы с сервисом: https://dev.dellin.ru/api/calculation/calculator/
+Описание методов API для работы с сервисом:
+https://dev.dellin.ru/api/calculation/calculator/
 """
 
 import requests
 import pandas as pd
 import json
-import auth
+from auth import auth
 import datetime
 from kladr import Kladr
 
@@ -27,7 +28,7 @@ class GetPrice:
     def get_ltl_price(self, reg_a: str, city_a: str, street_a: str,
                       reg_b: str, city_b: str, street_b: str,
                       weight: float, count: int) -> float:
-        """GetPrice(reg_a, city_a, street_a, reg_b, city_b, street_b, weight, count):
+        """
         - reg_a = регион отправления*: <Воронежская>,
         - city_a = город отправления*: <Воронеж>,
         - street_a = улица отправления: <Сибиряков>,
@@ -112,23 +113,25 @@ class GetPrice:
 
         # Gets response
         response_calc = requests.request(
-            'POST', auth.url_calc,
+            'POST', 'https://api.dellin.ru/v2/calculator.json',
             headers=self.headers, data=payload_calc
         )
         response_dellin = json.loads(response_calc.text.encode('utf8'))
 
-        price_dellin = response_dellin['data']['price']
+        price_dellin = response_dellin  #['data']['price']
 
         return price_dellin
 
 
 if __name__ == '__main__':
-    price_delivery = GetPrice().get_ltl_price(
+
+    TOKEN = auth.dellin_token
+    price = GetPrice(TOKEN)
+
+    ltl_price = price.get_ltl_price(
         'Воронежская', 'Воронеж', 'Сибиряков',
         'Белгородская', 'Алексеевка', 'Большевиков',
         100, 2
     )
 
-    print(
-        price_delivery
-    )
+    print('Стоимость доставки сборного груза', ltl_price, 'руб.')

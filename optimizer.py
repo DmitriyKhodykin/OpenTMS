@@ -22,7 +22,7 @@ class Optimizer:
         self.access_token = access_token
         self.orders = orders
 
-    def get_map_coordinates(self) -> list:
+    def __get_map_coordinates(self) -> list:
         """Возвращает список координат географических точек
         из заказов на перевозку.
         """
@@ -45,7 +45,7 @@ class Optimizer:
         """Возвращает лучший путь обхода точек, заданных гео-координатами.
         """
         # Получение списка геоточек (широта и долгота) каждого заказа
-        geo_points = self.get_map_coordinates()
+        geo_points = self.__get_map_coordinates()
         # Инициализация класса для задачи коммивояжера
         fitness_coordinates = mlrose.TravellingSales(coords=geo_points)
         # Формализация задачи
