@@ -1,17 +1,21 @@
 """Оптимизационный модуль приложения.
 
-Содержит код для решения оптимизационной транспортной задачи различными
-методами.
+Модуль строится на основе библиотеки `mlrose`, документацию по которой
+можно найти по ссылке: https://mlrose.readthedocs.io/en/stable/
+
+Библиотека предоставляет наиболее распространенные алгоритмы рандомизированной
+оптимизации и поиска, применимые к ряду задач оптимизации как дискретными,
+так и с непрерывными значениями.
 """
 
-import sys
-import pandas as pd
-import six
-
-sys.modules['sklearn.externals.six'] = six
-import mlrose
 from geocoding import Geocoding
 from auth import auth
+
+import mlrose
+import pandas as pd
+import six
+import sys
+sys.modules['sklearn.externals.six'] = six
 
 
 class Optimizer:

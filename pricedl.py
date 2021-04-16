@@ -5,10 +5,9 @@ https://dev.dellin.ru/api/calculation/calculator/
 """
 
 import requests
-import pandas as pd
 import json
-from auth import auth
 import datetime
+from auth import auth
 from kladr import Kladr
 
 
@@ -50,9 +49,10 @@ class GetPrice:
         vol = length*width*count
         total_weight = int(weight*count)
 
+        # Параметры сроков отправки груза
         today = datetime.date.today()
         delta = datetime.timedelta(days=3, hours=0, minutes=0)
-        produce_date = today + delta
+        produce_date = today + delta  # "2021-04-17"
 
         payload_calc = f'''{{
             "appkey": "{self.token}",
@@ -116,9 +116,17 @@ class GetPrice:
             'POST', 'https://api.dellin.ru/v2/calculator.json',
             headers=self.headers, data=payload_calc
         )
-        response_dellin = json.loads(response_calc.text.encode('utf8'))
 
-        price_dellin = response_dellin  #['data']['price']
+        try:
+            response_dellin = json.loads(response_calc.text.encode('utf8'))
+            price_dellin = response_dellin['data']['price']
+
+        except KeyError:
+            response_dellin = json.loads(response_calc.text.encode('utf8'))
+            price_dellin = f'Ошибка, ответ сервера: {response_dellin}'
+
+        except json.decoder.JSONDecodeError:
+            price_dellin = f'Ошибка, ответ сервера: {response_calc.text}'
 
         return price_dellin
 
@@ -130,8 +138,8 @@ if __name__ == '__main__':
 
     ltl_price = price.get_ltl_price(
         'Воронежская', 'Воронеж', 'Сибиряков',
-        'Белгородская', 'Алексеевка', 'Большевиков',
-        100, 2
+        'Воронежская', 'Воронеж', 'Сибиряков',
+        20, 2
     )
 
     print('Стоимость доставки сборного груза', ltl_price, 'руб.')
