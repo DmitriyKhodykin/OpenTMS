@@ -26,7 +26,7 @@ class GetPrice:
 
     def get_ltl_price(self, reg_a: str, city_a: str, street_a: str,
                       reg_b: str, city_b: str, street_b: str,
-                      weight: float, count: int) -> float:
+                      count: int) -> float:
         """
         - reg_a = регион отправления*: <Воронежская>,
         - city_a = город отправления*: <Воронеж>,
@@ -43,11 +43,13 @@ class GetPrice:
         arrival = Kladr(reg_b, city_b, street_b)
         arrival_street = arrival.get_street_code()
 
-        # Параметры груза
-        length = 1.2
-        width = 0.8
-        vol = length*width*count
-        total_weight = int(weight*count)
+        # Параметры груза (гофрокороб 20 кг)
+        length: float = 0.38
+        width: float = 0.29
+        height: float = 0.23
+        weight: float = 20.0
+        vol = length * width * height * count
+        total_weight = float(weight * count)
 
         # Параметры сроков отправки груза
         today = datetime.date.today()
@@ -118,16 +120,16 @@ class GetPrice:
                 "type": "noncash"
             }},
             "cargo": {{
-                "totalVolume": 0.1,
+                "totalVolume": {vol},
                 "oversizedVolume": 0,
-                "quantity": 1,
-                "length": 0.54,
-                "width": 0.39,
-                "totalWeight": 10,
+                "quantity": {count},
+                "length": {length},
+                "width": {width},
+                "totalWeight": {total_weight},
                 "oversizedWeight": 0,
-                "weight": 10,
+                "weight": {weight},
                 "freightName": "Food Ingredients",
-                "height": 0.39
+                "height": {height}
             }}
         }}'''
 
@@ -158,8 +160,8 @@ if __name__ == '__main__':
 
     ltl_price = price.get_ltl_price(
         'Воронежская', 'Воронеж', 'Патриотов',
-        'Москва', 'Москва', 'Генерала Рычагова',
-        20, 2
+        'Курская', 'Курск', 'Сонина',
+        1
     )
 
     print('Стоимость доставки сборного груза', ltl_price, 'руб.')
