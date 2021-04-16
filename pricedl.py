@@ -60,7 +60,7 @@ class GetPrice:
             "delivery": {{
                 "arrival": {{
                     "address": {{
-                        "street": "7700000000003690000000000"
+                        "street": "{arrival_street}"
                     }},
                     "variant": "address",
                     "time": {{
@@ -83,7 +83,7 @@ class GetPrice:
                 "derival": {{
                     "produceDate": "2021-04-19",
                     "address": {{
-                        "street": "7800000000012110000000000"
+                        "street": "{derival_street}"
                     }},
                     "variant": "address",
                     "time": {{
@@ -157,8 +157,8 @@ if __name__ == '__main__':
     price = GetPrice(TOKEN)
 
     ltl_price = price.get_ltl_price(
-        'Воронежская', 'Воронеж', 'Сибиряков',
-        'Воронежская', 'Воронеж', 'Остужева',
+        'Воронежская', 'Воронеж', 'Патриотов',
+        'Москва', 'Москва', 'Генерала Рычагова',
         20, 2
     )
 

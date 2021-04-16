@@ -54,8 +54,8 @@ class Kladr:
         street_code = response_street['result'][1]['id']
 
         # Сервис "Деловых Линий" требует длину кода в 24 символа
-        if len(street_code) != 24:
-            tail_code = 24 - len(street_code)
+        if len(street_code) != 25:
+            tail_code = 25 - len(street_code)
             append_street_code = str(street_code) + str(tail_code * '0')
         else:
             append_street_code = street_code
@@ -65,6 +65,6 @@ class Kladr:
 
 if __name__ == '__main__':
     # Передаем в экземпляр класса Область, Город, Улицу
-    full_code = Kladr('Воронежская', 'Воронеж', 'Остужева')
+    full_code = Kladr('Санкт-Петербург', 'Санкт-Петербург', 'Рыбацкий')
     arrival_code = full_code.get_street_code()
-    print(arrival_code)  # 360000010000191000000000
+    print(arrival_code)  # 3600000100001910000000000
