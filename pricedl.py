@@ -52,62 +52,82 @@ class GetPrice:
         # Параметры сроков отправки груза
         today = datetime.date.today()
         delta = datetime.timedelta(days=3, hours=0, minutes=0)
-        produce_date = today + delta  # "2021-04-17"
+        produce_date = "2021-04-19"  # today + delta  # "2021-04-17"
 
-        payload_calc = f'''{{
-            "appkey": "{self.token}",
+        payload_calc = f'''
+        {{
+            "appkey": "5413EC38-EC23-4AA9-979B-33C7C8E3D847",
             "delivery": {{
+                "arrival": {{
+                    "address": {{
+                        "street": "7700000000003690000000000"
+                    }},
+                    "variant": "address",
+                    "time": {{
+                        "worktimeStart": "9:30",
+                        "worktimeEnd": "19:00",
+                        "exactTime": "false"
+                    }},
+                    "handling": {{
+                        "freightLift": true,
+                        "toFloor": 2,
+                        "carry": 50
+                    }},
+                    "requirements": [
+                        "0x92fce2284f000b0241dad7c2e88b1655"
+                    ]
+                }},
                 "deliveryType": {{
                     "type": "auto"
                 }},
-                "arrival": {{
-                    "variant": "address",
-                    "address":{{
-                        "street":{arrival_street}
-                    }},
-                    "time": {{
-                        "worktimeStart": "8:00",
-                        "worktimeEnd": "17:00",
-                        "breakStart": "12:00",
-                        "breakEnd": "13:00",
-                        "exactTime": false
-                    }}
-                }},
                 "derival": {{
-                    "produceDate": "{produce_date}",
-                    "variant": "address",
-                    "address":{{
-                        "street":{derival_street}
+                    "produceDate": "2021-04-19",
+                    "address": {{
+                        "street": "7800000000012110000000000"
                     }},
+                    "variant": "address",
                     "time": {{
-                        "worktimeEnd": "23:59",
-                        "worktimeStart": "00:00",
-                        "breakStart": "12:00",
-                        "breakEnd": "13:00",
-                        "exactTime": false
+                        "worktimeEnd": "12:30",
+                        "worktimeStart": "08:30",
+                        "exactTime": "false"
+                    }},
+                    "handling": {{
+                        "freightLift": true,
+                        "toFloor": 2,
+                        "carry": 50
+                    }},
+                    "requirements": [
+                        "0x92fce2284f000b0241dad7c2e88b1655"
+                    ]
+                }},
+                "packages": [
+                    {{
+                        "uid": "0x947845D9BDC69EFA49630D8C080C4FBE",
+                        "count": 1
                     }}
-                }}
+                ]
             }},
             "members": {{
                 "requester": {{
+                    "uid": "ae62f076-d602-4341-b691-45bf8dfe4a10",
                     "role": "sender"
                 }}
-            }},
-            "cargo": {{
-                "length": {length},
-                "width": {width},
-                "weight": {weight},
-                "height": 1,
-                "totalVolume": {vol},
-                "totalWeight": {total_weight},
-                "oversizedWeight":1,
-                "oversizedVolume":1,
-                "freightName":"Food",
-                "hazardClass": 0
             }},
             "payment": {{
                 "paymentCity": "7700000000000000000000000",
                 "type": "noncash"
+            }},
+            "cargo": {{
+                "totalVolume": 0.1,
+                "oversizedVolume": 0,
+                "quantity": 1,
+                "length": 0.54,
+                "width": 0.39,
+                "totalWeight": 10,
+                "oversizedWeight": 0,
+                "weight": 10,
+                "freightName": "Food Ingredients",
+                "height": 0.39
             }}
         }}'''
 
@@ -138,7 +158,7 @@ if __name__ == '__main__':
 
     ltl_price = price.get_ltl_price(
         'Воронежская', 'Воронеж', 'Сибиряков',
-        'Воронежская', 'Воронеж', 'Сибиряков',
+        'Воронежская', 'Воронеж', 'Остужева',
         20, 2
     )
 
