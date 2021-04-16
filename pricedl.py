@@ -56,7 +56,7 @@ class GetPrice:
 
         payload_calc = f'''
         {{
-            "appkey": "5413EC38-EC23-4AA9-979B-33C7C8E3D847",
+            "appkey": "{self.token}",
             "delivery": {{
                 "arrival": {{
                     "address": {{
