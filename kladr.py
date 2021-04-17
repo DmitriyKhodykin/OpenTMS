@@ -29,12 +29,12 @@ class Kladr:
             response_region = json.loads(request_region.text)
             region_code = response_region['result'][1]['id']
 
-        # except json.decoder.JSONDecodeError:
-        #     print('Ошибка кодировки ответа для кода региона')
-        #     region_code = None
+        except json.decoder.JSONDecodeError:
+            print('Kladr. Ошибка декодирования региона')
+            region_code = None
 
         except IndexError:
-            print('Не удалось найти наименование региона')
+            print('Kladr. Не удалось найти наименование региона')
             region_code = None
 
         return region_code
@@ -50,8 +50,12 @@ class Kladr:
             response_city = json.loads(request_city.text)
             city_code = response_city['result'][1]['id']
 
+        except json.decoder.JSONDecodeError:
+            print('Kladr. Ошибка декодирования города')
+            city_code = None
+
         except IndexError:
-            print('Не удалось найти наименование города')
+            print('Kladr. Не удалось найти наименование города')
             city_code = None
 
         return city_code
@@ -68,15 +72,19 @@ class Kladr:
             response_street = json.loads(request_street.text)
             street_code = response_street['result'][1]['id']
 
-            # Сервис "Деловых Линий" требует длину кода в 24 символа
+            # Сервис "Деловых Линий" требует длину кода в 25 символов
             if len(street_code) != 25:
                 tail_code = 25 - len(street_code)
                 append_street_code = str(street_code) + str(tail_code * '0')
             else:
                 append_street_code = street_code
 
+        except json.decoder.JSONDecodeError:
+            print('Kladr. Ошибка декодирования улицы')
+            append_street_code = None
+
         except IndexError:
-            print('Не удалось найти наименование улицы')
+            print('Kladr. Не удалось найти наименование улицы')
             append_street_code = None
 
         return append_street_code
@@ -84,6 +92,6 @@ class Kladr:
 
 if __name__ == '__main__':
     # Передаем в экземпляр класса Область, Город, Улицу
-    full_code = Kladr('Санкт-Петербург', 'Санкт-Петербург', 'Рыбацкий')
+    full_code = Kladr('Карапунь', 'Санкт-Петербург', 'Рыбацкий')
     arrival_code = full_code.get_street_code()
     print(arrival_code)  # 3600000100001910000000000

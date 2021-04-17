@@ -11,11 +11,11 @@
 from geocoding import Geocoding
 from auth import auth
 
-import mlrose
 import pandas as pd
 import six
 import sys
 sys.modules['sklearn.externals.six'] = six
+import mlrose
 
 
 class Optimizer:
@@ -70,11 +70,11 @@ class Optimizer:
 
         return best_state
 
-    def get_reindex_orders(self) -> pd.DataFrame:
+    def get_orderby_map(self) -> pd.DataFrame:
         """Возвращает отражированный в опорядке оптимального
         обхода список географических точек для выполнения заказов.
         """
-        self.orders['coordinates_list']  = self.get_map_coordinates()
+        self.orders['coordinates_list']  = self.__get_map_coordinates()
         # Получение списка обхода геоточек
         order_route = self.get_map_route()
         # Ранжирование заказов в порядке исполнения
@@ -99,6 +99,6 @@ if __name__ == "__main__":
 
     opt = Optimizer(auth.mapbox_token, first_order)
 
-    result: pd.DataFrame = opt.get_reindex_orders()
+    result: pd.DataFrame = opt.get_orderby_map()
 
     print(result)
