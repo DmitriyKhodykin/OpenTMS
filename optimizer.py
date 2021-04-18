@@ -45,7 +45,11 @@ class Optimizer:
 
         return coordinates_list
 
-    def get_map_route(self) -> list:
+    def __get_price_triplets(self) -> list:
+        """
+        """
+
+    def map_routing(self) -> list:
         """Возвращает лучший путь обхода точек, заданных гео-координатами.
         """
         # Получение списка геоточек (широта и долгота) каждого заказа
@@ -70,17 +74,29 @@ class Optimizer:
 
         return best_state
 
-    def get_orderby_map(self) -> pd.DataFrame:
+    def price_routing(self):
+        """Возвращает лучший путь обхода гео-точек исходя из стоимости
+        между каждой из таких пар.
+        """
+        pass
+
+    def orderby_map(self) -> pd.DataFrame:
         """Возвращает отражированный в опорядке оптимального
         обхода список географических точек для выполнения заказов.
         """
         self.orders['coordinates_list']  = self.__get_map_coordinates()
         # Получение списка обхода геоточек
-        order_route = self.get_map_route()
+        order_route = self.map_routing()
         # Ранжирование заказов в порядке исполнения
         reindex_orders = self.orders.reindex(index=order_route)
 
         return reindex_orders
+
+    def orderby_price(self) -> pd.DataFrame:
+        """Возвращает список заказов, отражированный в порядке
+        их оптимального обхода исходя из стоимости перевозки между точками.
+        """
+        pass
 
 
 if __name__ == "__main__":
@@ -99,6 +115,6 @@ if __name__ == "__main__":
 
     opt = Optimizer(auth.mapbox_token, first_order)
 
-    result: pd.DataFrame = opt.get_orderby_map()
+    result: pd.DataFrame = opt.orderby_map()
 
     print(result)
