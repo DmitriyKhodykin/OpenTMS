@@ -46,7 +46,9 @@ class Optimizer:
         return coordinates_list
 
     def __get_price_triplets(self) -> list:
-        """
+        """Возвращает список кортежей с тойками:
+        индекс географического объекта 1, индекс географического
+        объекта 2, стоимость доставки между объектами.
         """
 
     def map_routing(self) -> list:
