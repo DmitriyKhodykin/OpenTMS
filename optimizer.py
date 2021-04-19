@@ -55,13 +55,13 @@ class Optimizer:
         # Инициализация класса определения цены
         price = GetPrice(access_token)
         # Перебор возможных пар географических объектов
-        for address_from in self.orders:
-            for address_to in self.orders:
-                if address_to != address_from:
+        for index_from, address_from in self.orders.iterrows():
+            for index_to, address_to in self.orders.iterrows():
+                if address_to['adress'] != address_from['adress']:
                     ltl_price = price.get_ltl_price(
-                        address_from, address_to, 1
+                        address_from['adress'], address_to['adress'], 1
                     )
-                    triplet = (address_from, address_to, ltl_price)
+                    triplet = (index_from, index_to, ltl_price)
                     triplets.append(triplet)
 
         return triplets
@@ -75,7 +75,7 @@ class Optimizer:
         fitness_coordinates = mlrose.TravellingSales(coords=geo_points)
         # Формализация задачи
         problem_fit = mlrose.TSPOpt(
-            length=len(geo_points),
+            length=len(self.orders),
             fitness_fn=fitness_coordinates,
             maximize=False
         )
@@ -101,7 +101,7 @@ class Optimizer:
         fitness_prices = mlrose.TravellingSales(distances=triplets)
         # Формализация задачи
         problem_fit = mlrose.TSPOpt(
-            length=len(triplets),
+            length=len(self.orders),
             fitness_fn=fitness_prices,
             maximize=False
         )
@@ -115,17 +115,19 @@ class Optimizer:
             random_state=2
         )
 
-        return triplets
+        return best_state
 
     def orderby_map(self, access_token) -> pd.DataFrame:
         """Возвращает отражированный в опорядке оптимального
         обхода список географических точек для выполнения заказов.
         """
-        self.orders['coordinates_list'] = self.__get_map_coordinates(access_token)
+        # Копируем фрейм с заказами
+        orders = self.orders.copy()
+        orders['coordinates_list'] = self.__get_map_coordinates(access_token)
         # Получение списка обхода геоточек
         order_route = self.map_routing(access_token)
         # Ранжирование заказов в порядке исполнения
-        reindex_orders = self.orders.reindex(index=order_route)
+        reindex_orders = orders.reindex(index=order_route)
 
         return reindex_orders
 
@@ -133,10 +135,12 @@ class Optimizer:
         """Возвращает список заказов, отражированный в порядке
         их оптимального обхода исходя из стоимости перевозки между точками.
         """
+        # Копируем фрейм с заказами
+        orders = self.orders.copy()
         # Получение списка обхода геоточек
         order_route = self.price_routing(access_token)
         # Ранжирование заказов в порядке исполнения
-        reindex_orders = self.orders.reindex(index=order_route)
+        reindex_orders = orders.reindex(index=order_route)
 
         return reindex_orders
 
@@ -158,5 +162,9 @@ if __name__ == "__main__":
     opt = Optimizer(first_order)
 
     ordered_map: pd.DataFrame = opt.orderby_map(auth.mapbox_token)
-
+    print('Отранжировано по географическим координатам')
     print(ordered_map)
+
+    ordered_price: pd.DataFrame = opt.orderby_price(auth.dellin_token)
+    print('Отранжировано по стоимости доставки')
+    print(ordered_price)
