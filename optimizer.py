@@ -23,19 +23,17 @@ class Optimizer:
     """Решает оптимизационную транспортную задачу.
     """
 
-    def __init__(self, token_map: str, token_price: str,
-                 orders: pd.DataFrame):
-        self.access_token = token_map
+    def __init__(self, orders: pd.DataFrame):
         self.orders = orders
 
-    def __get_map_coordinates(self) -> list:
+    def __get_map_coordinates(self, access_token) -> list:
         """Возвращает список координат географических точек
         из заказов на перевозку.
         """
         # Определение координат точек
         coordinates_list: list = []
         # Экземпляр класа геокодировщика
-        gc = Geocoding(self.access_token)
+        gc = Geocoding(access_token)
         # Последовательное прямое геокодирование адресов
         for index, row in self.orders.iterrows():
             lat_lng = gc.get_coordinates(row['adress'])
@@ -55,11 +53,11 @@ class Optimizer:
         """
         pass
 
-    def map_routing(self) -> list:
+    def map_routing(self, access_token) -> list:
         """Возвращает лучший путь обхода точек, заданных гео-координатами.
         """
         # Получение списка геоточек (широта и долгота) каждого заказа
-        geo_points = self.__get_map_coordinates()
+        geo_points = self.__get_map_coordinates(access_token)
         # Инициализация класса для задачи коммивояжера
         fitness_coordinates = mlrose.TravellingSales(coords=geo_points)
         # Формализация задачи
@@ -86,13 +84,13 @@ class Optimizer:
         """
         pass
 
-    def orderby_map(self) -> pd.DataFrame:
+    def orderby_map(self, access_token) -> pd.DataFrame:
         """Возвращает отражированный в опорядке оптимального
         обхода список географических точек для выполнения заказов.
         """
-        self.orders['coordinates_list'] = self.__get_map_coordinates()
+        self.orders['coordinates_list'] = self.__get_map_coordinates(access_token)
         # Получение списка обхода геоточек
-        order_route = self.map_routing()
+        order_route = self.map_routing(access_token)
         # Ранжирование заказов в порядке исполнения
         reindex_orders = self.orders.reindex(index=order_route)
 
@@ -119,8 +117,8 @@ if __name__ == "__main__":
         }
     )
 
-    opt = Optimizer(auth.mapbox_token, first_order)
+    opt = Optimizer(first_order)
 
-    ordered_map: pd.DataFrame = opt.orderby_map()
+    ordered_map: pd.DataFrame = opt.orderby_map(auth.mapbox_token)
 
     print(ordered_map)
