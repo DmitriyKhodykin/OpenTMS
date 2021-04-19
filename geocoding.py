@@ -74,14 +74,14 @@ if __name__ == "__main__":
     gc = Geocoding(MAPBOX_TOKEN)
 
     # Наименования геоточек
-    CITY_A = 'Воронеж, Россия'
-    CITY_B = 'Новосибирск, Россия'
+    CITY_A = 'Россия, Воронежская, Воронеж, Труда, 59'
+    CITY_B = 'Россия, Воронежская, Воронеж, Баррикадная, 39'
 
     # Определение координат
     coordinates_a = gc.get_coordinates(CITY_A)
-    print(f'Координаты города <{CITY_A}>:', coordinates_a)
+    print(f'Координаты <{CITY_A}>:', coordinates_a)
     coordinates_b = gc.get_coordinates(CITY_B)
-    print(f'Координаты города <{CITY_B}>:', coordinates_b)
+    print(f'Координаты <{CITY_B}>:', coordinates_b)
 
     # Определение расстояния
     dist = gc.distance_mapbox(CITY_A, CITY_B)
