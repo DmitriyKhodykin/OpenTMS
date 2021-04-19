@@ -111,11 +111,16 @@ class Optimizer:
 
         return reindex_orders
 
-    def orderby_price(self) -> pd.DataFrame:
+    def orderby_price(self, access_token) -> pd.DataFrame:
         """Возвращает список заказов, отражированный в порядке
         их оптимального обхода исходя из стоимости перевозки между точками.
         """
-        pass
+        # Получение списка обхода геоточек
+        order_route = self.price_routing(access_token)
+        # Ранжирование заказов в порядке исполнения
+        reindex_orders = self.orders.reindex(index=order_route)
+
+        return reindex_orders
 
 
 if __name__ == "__main__":
