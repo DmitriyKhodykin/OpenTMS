@@ -95,7 +95,25 @@ class Optimizer:
         """Возвращает лучший путь обхода гео-точек исходя из стоимости
         между каждой из таких пар.
         """
+        # Получение триплетов со стоимостью сборных перевозок
         triplets = self.__get_price_triplets(access_token)
+        # Инициализация класса для задачи коммивояжера
+        fitness_prices = mlrose.TravellingSales(distances=triplets)
+        # Формализация задачи
+        problem_fit = mlrose.TSPOpt(
+            length=len(triplets),
+            fitness_fn=fitness_prices,
+            maximize=False
+        )
+        # Применение оптимизационного алгоритма с гипер-параметрами
+        best_state, _ = mlrose.genetic_alg(
+            problem_fit,
+            pop_size=200,
+            mutation_prob=0.2,
+            max_attempts=100,
+            max_iters=10,
+            random_state=2
+        )
 
         return triplets
 
