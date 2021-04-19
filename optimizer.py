@@ -45,13 +45,26 @@ class Optimizer:
 
         return coordinates_list
 
-    def __get_price_triplets(self) -> list:
+    def __get_price_triplets(self, access_token) -> list:
         """Возвращает список кортежей с тройками:
         1) Индекс географического объекта 1,
         2) Индекс географического объекта 2,
         3) Стоимость доставки между объектами.
         """
-        pass
+        triplets: list = []
+        # Инициализация класса определения цены
+        price = GetPrice(access_token)
+        # Перебор возможных пар географических объектов
+        for address_from in self.orders:
+            for address_to in self.orders:
+                if address_to != address_from:
+                    ltl_price = price.get_ltl_price(
+                        address_from, address_to, 1
+                    )
+                    triplet = (address_from, address_to, ltl_price)
+                    triplets.append(triplet)
+
+        return triplets
 
     def map_routing(self, access_token) -> list:
         """Возвращает лучший путь обхода точек, заданных гео-координатами.
@@ -78,11 +91,13 @@ class Optimizer:
 
         return best_state
 
-    def price_routing(self):
+    def price_routing(self, access_token) -> list:
         """Возвращает лучший путь обхода гео-точек исходя из стоимости
         между каждой из таких пар.
         """
-        pass
+        triplets = self.__get_price_triplets(access_token)
+
+        return triplets
 
     def orderby_map(self, access_token) -> pd.DataFrame:
         """Возвращает отражированный в опорядке оптимального
