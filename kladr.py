@@ -114,6 +114,6 @@ class Kladr:
 
 if __name__ == '__main__':
     # Передаем в экземпляр класса Область, Город, Улицу
-    full_code = Kladr('Россия, Воронежская, Воронеж, Патриотов')
+    full_code = Kladr('Россия, Воронежская, Воронеж, Баррикадная, 39')
     arrival_code = full_code.get_street_code()
-    print(arrival_code)  # 3600000100006660000000000
+    print(arrival_code)  # 3600000100000650000000000

@@ -6,7 +6,6 @@ https://dev.dellin.ru/api/calculation/calculator/
 
 import requests
 import json
-import datetime
 from auth import auth
 from kladr import Kladr
 
@@ -24,23 +23,17 @@ class GetPrice:
     def __init__(self, token):
         self.token = token
 
-    def get_ltl_price(self, reg_a: str, city_a: str, street_a: str,
-                      reg_b: str, city_b: str, street_b: str,
+    def get_ltl_price(self, adress_a: str, adress_b: str,
                       count: int) -> float:
         """
-        - reg_a = регион отправления*: <Воронежская>,
-        - city_a = город отправления*: <Воронеж>,
-        - street_a = улица отправления: <Сибиряков>,
-        - reg_b = регион доставки*: <Воронежская>,
-        - city_b = город доставки*: <Воронеж>,
-        - street_b = улица доставки: <Остужева>
+        adress:
+        'Россия, Воронежская, Воронеж, Остужева, 10'
         * адреса доставки - в пределах РФ (Кроме г.Калининграда),
-        - weight = вес самого тяжелого грузового места в кг,
         - count = количество грузовых мест
         """
-        derival = Kladr(reg_a, city_a, street_a)
+        derival = Kladr(adress_a)
         derival_street = derival.get_street_code()
-        arrival = Kladr(reg_b, city_b, street_b)
+        arrival = Kladr(adress_b)
         arrival_street = arrival.get_street_code()
 
         # Параметры груза (гофрокороб 20 кг)
@@ -52,9 +45,7 @@ class GetPrice:
         total_weight = float(weight * count)
 
         # Параметры сроков отправки груза
-        today = datetime.date.today()
-        delta = datetime.timedelta(days=3, hours=0, minutes=0)
-        produce_date = "2021-04-19"  # today + delta  # "2021-04-17"
+        produce_date = "2021-04-20"
 
         payload_calc = f'''
         {{
@@ -83,7 +74,7 @@ class GetPrice:
                     "type": "auto"
                 }},
                 "derival": {{
-                    "produceDate": "2021-04-19",
+                    "produceDate": "{produce_date}",
                     "address": {{
                         "street": "{derival_street}"
                     }},
@@ -143,12 +134,13 @@ class GetPrice:
             response_dellin = json.loads(response_calc.text.encode('utf8'))
             price_dellin = response_dellin['data']['price']
 
-        except KeyError:
-            response_dellin = json.loads(response_calc.text.encode('utf8'))
-            price_dellin = f'Ошибка, ответ сервера: {response_dellin}'
-
         except json.decoder.JSONDecodeError:
-            price_dellin = f'Ошибка, ответ сервера: {response_calc.text}'
+            print(f'Price. Ошибка кодировщика: {response_calc.text}')
+            price_dellin = None
+
+        except KeyError:
+            print(f'Price. Пустой ответ сервера: {response_calc.text}')
+            price_dellin = None
 
         return price_dellin
 
@@ -159,9 +151,9 @@ if __name__ == '__main__':
     price = GetPrice(TOKEN)
 
     ltl_price = price.get_ltl_price(
-        'Воронежская', 'Воронеж', 'Патриотов',
-        'Курская', 'Курск', 'Сонина',
+        'Россия, Воронежская, Воронеж, Труда, 59',
+        'Россия, Воронежская, Воронеж, Баррикадная, 39',
         1
     )
 
-    print('Стоимость доставки сборного груза', ltl_price, 'руб.')
+    print(ltl_price)

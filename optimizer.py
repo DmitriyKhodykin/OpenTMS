@@ -9,6 +9,7 @@
 """
 
 from geocoding import Geocoding
+from pricedl import GetPrice
 from auth import auth
 
 import pandas as pd
@@ -22,8 +23,9 @@ class Optimizer:
     """Решает оптимизационную транспортную задачу.
     """
 
-    def __init__(self, access_token: str, orders: pd.DataFrame):
-        self.access_token = access_token
+    def __init__(self, token_map: str, token_price: str,
+                 orders: pd.DataFrame):
+        self.access_token = token_map
         self.orders = orders
 
     def __get_map_coordinates(self) -> list:
@@ -46,10 +48,12 @@ class Optimizer:
         return coordinates_list
 
     def __get_price_triplets(self) -> list:
-        """Возвращает список кортежей с тойками:
-        индекс географического объекта 1, индекс географического
-        объекта 2, стоимость доставки между объектами.
+        """Возвращает список кортежей с тройками:
+        1) Индекс географического объекта 1,
+        2) Индекс географического объекта 2,
+        3) Стоимость доставки между объектами.
         """
+        pass
 
     def map_routing(self) -> list:
         """Возвращает лучший путь обхода точек, заданных гео-координатами.
@@ -86,7 +90,7 @@ class Optimizer:
         """Возвращает отражированный в опорядке оптимального
         обхода список географических точек для выполнения заказов.
         """
-        self.orders['coordinates_list']  = self.__get_map_coordinates()
+        self.orders['coordinates_list'] = self.__get_map_coordinates()
         # Получение списка обхода геоточек
         order_route = self.map_routing()
         # Ранжирование заказов в порядке исполнения
@@ -106,17 +110,17 @@ if __name__ == "__main__":
     first_order = pd.DataFrame(
         {
             'adress': [
-                'Россия, Москва, Волоколамское шоссе, 3',
-                'Россия, Москва, Рязанский проспект, 30',
-                'Россия, Москва, Люсиновская улица, 20',
-                'Россия, Москва, Ленинградское шоссе, 25',
-                'Россия, Москва, Улица Свободы, 19'
+                'Россия, Воронежская, Воронеж, Труда, 59',
+                'Россия, Воронежская, Воронеж, Баррикадная, 39',
+                'Россия, Воронежская, Воронеж, Космонавтов, 10',
+                'Россия, Воронежская, Воронеж, Труда, 1',
+                'Россия, Воронежская, Воронеж, Ленина, 43'
             ]
         }
     )
 
     opt = Optimizer(auth.mapbox_token, first_order)
 
-    result: pd.DataFrame = opt.orderby_map()
+    ordered_map: pd.DataFrame = opt.orderby_map()
 
-    print(result)
+    print(ordered_map)
