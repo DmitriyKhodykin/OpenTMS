@@ -8,9 +8,8 @@
 так и с непрерывными значениями.
 """
 
-from auth import auth
 from geocoding import geocoding
-from price import GetPrice
+from price import price
 
 import pandas as pd
 import six
@@ -44,32 +43,29 @@ class Optimizer:
 
         return coordinates_list
 
-    def __get_price_triplets(self, access_token) -> list:
+    def __get_price_triplets(self) -> list:
         """Возвращает список кортежей с тройками:
         1) Индекс географического объекта 1,
         2) Индекс географического объекта 2,
         3) Стоимость доставки между объектами.
         """
         triplets: list = []
-        # Инициализация класса определения цены
-        price = GetPrice(access_token)
+
         # Перебор возможных пар географических объектов
         for index_from, address_from in self.orders.iterrows():
             for index_to, address_to in self.orders.iterrows():
-                if address_to['adress'] != address_from['adress']:
-                    ltl_price = price.get_ltl_price(
-                        address_from['adress'], address_to['adress'], 1
-                    )
+                if address_to['address'] != address_from['address']:
+                    ltl_price = price(address_from['address'], address_to['address'])
                     triplet = (index_from, index_to, ltl_price)
                     triplets.append(triplet)
 
         return triplets
 
-    def map_routing(self, access_token) -> list:
+    def map_routing(self) -> list:
         """Возвращает лучший путь обхода точек, заданных гео-координатами.
         """
         # Получение списка геоточек (широта и долгота) каждого заказа
-        geo_points = self.__get_map_coordinates(access_token)
+        geo_points = self.__get_map_coordinates()
         # Инициализация класса для задачи коммивояжера
         fitness_coordinates = mlrose.TravellingSales(coords=geo_points)
         # Формализация задачи
@@ -90,12 +86,12 @@ class Optimizer:
 
         return best_state
 
-    def price_routing(self, access_token) -> list:
+    def price_routing(self) -> list:
         """Возвращает лучший путь обхода гео-точек исходя из стоимости
         между каждой из таких пар.
         """
         # Получение триплетов со стоимостью сборных перевозок
-        triplets = self.__get_price_triplets(access_token)
+        triplets = self.__get_price_triplets()
         # Инициализация класса для задачи коммивояжера
         fitness_prices = mlrose.TravellingSales(distances=triplets)
         # Формализация задачи
@@ -116,28 +112,28 @@ class Optimizer:
 
         return best_state
 
-    def orderby_map(self, access_token) -> pd.DataFrame:
+    def orderby_map(self) -> pd.DataFrame:
         """Возвращает отражированный в опорядке оптимального
         обхода список географических точек для выполнения заказов.
         """
         # Копируем фрейм с заказами
         orders = self.orders.copy()
-        orders['coordinates_list'] = self.__get_map_coordinates(access_token)
+        orders['coordinates_list'] = self.__get_map_coordinates()
         # Получение списка обхода геоточек
-        order_route = self.map_routing(access_token)
+        order_route = self.map_routing()
         # Ранжирование заказов в порядке исполнения
         reindex_orders = orders.reindex(index=order_route)
 
         return reindex_orders
 
-    def orderby_price(self, access_token) -> pd.DataFrame:
+    def orderby_price(self) -> pd.DataFrame:
         """Возвращает список заказов, отражированный в порядке
         их оптимального обхода исходя из стоимости перевозки между точками.
         """
         # Копируем фрейм с заказами
         orders = self.orders.copy()
         # Получение списка обхода геоточек
-        order_route = self.price_routing(access_token)
+        order_route = self.price_routing()
         # Ранжирование заказов в порядке исполнения
         reindex_orders = orders.reindex(index=order_route)
 
@@ -160,10 +156,10 @@ if __name__ == "__main__":
 
     opt = Optimizer(first_order)
 
-    ordered_map: pd.DataFrame = opt.orderby_map(auth.mapbox_token)
+    ordered_map: pd.DataFrame = opt.orderby_map()
     print('Отранжировано по географическим координатам')
     print(ordered_map)
 
-    ordered_price: pd.DataFrame = opt.orderby_price(auth.dellin_token)
+    ordered_price: pd.DataFrame = opt.orderby_price()
     print('Отранжировано по стоимости доставки')
     print(ordered_price)
