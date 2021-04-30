@@ -8,9 +8,9 @@
 так и с непрерывными значениями.
 """
 
-from geocoding import Geocoding
-from pricedl import GetPrice
 from auth import auth
+from geocoding import geocoding
+from price import GetPrice
 
 import pandas as pd
 import six
@@ -26,17 +26,16 @@ class Optimizer:
     def __init__(self, orders: pd.DataFrame):
         self.orders = orders
 
-    def __get_map_coordinates(self, access_token) -> list:
+    def __get_map_coordinates(self) -> list:
         """Возвращает список координат географических точек
         из заказов на перевозку.
         """
         # Определение координат точек
         coordinates_list: list = []
         # Экземпляр класа геокодировщика
-        gc = Geocoding(access_token)
         # Последовательное прямое геокодирование адресов
         for index, row in self.orders.iterrows():
-            lat_lng = gc.get_coordinates(row['adress'])
+            lat_lng = geocoding(row['address'])
             coordinates: tuple = (
                 lat_lng[0],
                 lat_lng[1]
@@ -149,12 +148,12 @@ if __name__ == "__main__":
 
     first_order = pd.DataFrame(
         {
-            'adress': [
-                'Россия, Воронежская, Воронеж, Труда, 59',
-                'Россия, Воронежская, Воронеж, Баррикадная, 39',
-                'Россия, Воронежская, Воронеж, Космонавтов, 10',
-                'Россия, Воронежская, Воронеж, Труда, 1',
-                'Россия, Воронежская, Воронеж, Ленина, 43'
+            'address': [
+                'Воронеж, Труда, 59',
+                'Воронеж, Баррикадная, 39',
+                'Воронеж, Космонавтов, 10',
+                'Воронеж, Труда, 1',
+                'Воронеж, Ленина, 43'
             ]
         }
     )
