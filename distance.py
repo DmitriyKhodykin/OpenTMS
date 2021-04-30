@@ -1,23 +1,45 @@
-def distance_mapbox(self, point1: str, point2: str,
+"""Distance module.
+
+Calculates the distance between two geographic points
+[lon, lat] > [lon, lat].
+
+To solve this problem, the service is used: MapBox.com
+
+API docs: https://docs.mapbox.com/api/overview/
+"""
+
+import json
+import requests
+
+from auth import auth
+from geocoding import geocoding
+
+
+def distance_mapbox(point_from: str, point_to: str,
                     profile='driving-traffic') -> int:
-    """Возвращает расстояние между пунктами 1 и 2 в км
-        # Опции метода:
-        # - driving-traffic - Исторический трафик для автомобиля
-        # - driving - Самый быстрый путь для автомобиля
-        # - walking - Пешеходный маршрут
-        # - cycling - Веломаршрут
+    """Distance between from and to returns (in km)
+        # Profiles:
+        # - driving-traffic
+        # - driving
+        # - walking
+        # - cycling
     """
+    # Reversing Latitude and Longitude for MapBox
+    coordinates_from: list = geocoding(point_from)[0:2]
+    geopoint_from: str = f'{coordinates_from[1]},{coordinates_from[0]}'  # Reverse order for MapBox
+    coordinates_to: list = geocoding(point_to)[0:2]
+    geopoint_to: str = f'{coordinates_to[1]},{coordinates_to[0]}'
 
-    coords1: list = self.get_coordinates()
-    geo_1: str = f'{coords1[1]},{coords1[0]}'  # Понятный сервису формат
-    coords2: list = self.get_coordinates()
-    geo_2: str = f'{coords2[1]},{coords2[0]}'
+    request = requests.get(
+        f'https://api.mapbox.com/directions/v5/mapbox/{profile}/{geopoint_from};'
+        f'{geopoint_to}?access_token={auth.mapbox_token}').text
 
-    r = requests.get(
-        f'https://api.mapbox.com/directions/v5/mapbox/{profile}/{geo_1};'
-        f'{geo_2}?access_token={auth.mapbox_token}').text
-
-    response = json.loads(r)
+    response = json.loads(request)
     distance = int(response['routes'][0]['distance']) // 1000
 
     return distance
+
+
+if __name__ == "__main__":
+    distance_between_points = distance_mapbox("Воронеж Труда 11", "Воронеж Патриотов 11")
+    print('Distance:', distance_between_points, 'km')

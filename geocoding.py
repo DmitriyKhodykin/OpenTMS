@@ -31,7 +31,7 @@ def geocoding(address: str) -> list:
         'cache-control': "no-cache"
     }
 
-    request = requests.request("POST", url, data=payload, headers=headers)
+    request = requests.request("POST", url, data=payload, headers=headers, timeout=0.5)
 
     # Service response
     if request.status_code == 200:
