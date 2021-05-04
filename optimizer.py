@@ -1,11 +1,11 @@
-"""Оптимизационный модуль приложения.
+"""Optimization module.
 
-Модуль строится на основе библиотеки `mlrose`, документацию по которой
-можно найти по ссылке: https://mlrose.readthedocs.io/en/stable/
+Module is based on `mlrose` library,
+Docs: https://mlrose.readthedocs.io/en/stable/
 
-Библиотека предоставляет наиболее распространенные алгоритмы рандомизированной
-оптимизации и поиска, применимые к ряду задач оптимизации как дискретными,
-так и с непрерывными значениями.
+The library provides the most common randomized optimization
+and search algorithms applicable to a range of optimization problems,
+both discrete and continuous.
 """
 
 from geocoding import geocoding
@@ -19,39 +19,38 @@ import mlrose
 
 
 class Optimizer:
-    """Решает оптимизационную транспортную задачу.
-    """
 
     def __init__(self, orders: pd.DataFrame):
         self.orders = orders
 
     def __get_map_coordinates(self) -> list:
-        """Возвращает список координат географических точек
-        из заказов на перевозку.
+        """Returns a list of geographic locations from freight orders.
         """
-        # Определение координат точек
+
         coordinates_list: list = []
-        # Экземпляр класа геокодировщика
-        # Последовательное прямое геокодирование адресов
-        for index, row in self.orders.iterrows():
-            lat_lng = geocoding(row['address'])
-            coordinates: tuple = (
-                lat_lng[0],
-                lat_lng[1]
-            )
-            coordinates_list.append(coordinates)
+
+        try:
+            for index, row in self.orders.iterrows():
+                lat_lng = geocoding(row['address'])
+                coordinates: tuple = (
+                    lat_lng[0],
+                    lat_lng[1]
+                )
+                coordinates_list.append(coordinates)
+        except TypeError:
+            print('error: Empty geocoding result')
 
         return coordinates_list
 
     def __get_price_triplets(self) -> list:
-        """Возвращает список кортежей с тройками:
-        1) Индекс географического объекта 1,
-        2) Индекс географического объекта 2,
-        3) Стоимость доставки между объектами.
+        """Returns a list of triplets:
+        1) Geographic point index 1,
+        2) Geographic point index 2,
+        3) Delivery cost between points.
         """
         triplets: list = []
 
-        # Перебор возможных пар географических объектов
+        # All of possible pairs
         for index_from, address_from in self.orders.iterrows():
             for index_to, address_to in self.orders.iterrows():
                 if address_to['address'] != address_from['address']:
@@ -62,19 +61,19 @@ class Optimizer:
         return triplets
 
     def map_routing(self) -> list:
-        """Возвращает лучший путь обхода точек, заданных гео-координатами.
+        """Returns the best path to traverse points given by geo-coordinates.
         """
-        # Получение списка геоточек (широта и долгота) каждого заказа
+        # Lat and Lon of each order
         geo_points = self.__get_map_coordinates()
-        # Инициализация класса для задачи коммивояжера
+        # Sales travelling instance
         fitness_coordinates = mlrose.TravellingSales(coords=geo_points)
-        # Формализация задачи
+        # Fit problem
         problem_fit = mlrose.TSPOpt(
             length=len(self.orders),
             fitness_fn=fitness_coordinates,
             maximize=False
         )
-        # Применение оптимизационного алгоритма с гипер-параметрами
+        # Best state result
         best_state, _ = mlrose.genetic_alg(
             problem_fit,
             pop_size=200,
@@ -87,20 +86,19 @@ class Optimizer:
         return best_state
 
     def price_routing(self) -> list:
-        """Возвращает лучший путь обхода гео-точек исходя из стоимости
-        между каждой из таких пар.
+        """Returns the best path to traverse geopoints based on
+        the cost between each of these pairs.
         """
-        # Получение триплетов со стоимостью сборных перевозок
         triplets = self.__get_price_triplets()
-        # Инициализация класса для задачи коммивояжера
+        # Sales travelling instance
         fitness_prices = mlrose.TravellingSales(distances=triplets)
-        # Формализация задачи
+        # Fit problem
         problem_fit = mlrose.TSPOpt(
             length=len(self.orders),
             fitness_fn=fitness_prices,
             maximize=False
         )
-        # Применение оптимизационного алгоритма с гипер-параметрами
+
         best_state, _ = mlrose.genetic_alg(
             problem_fit,
             pop_size=200,
@@ -113,28 +111,22 @@ class Optimizer:
         return best_state
 
     def orderby_map(self) -> pd.DataFrame:
-        """Возвращает отражированный в опорядке оптимального
-        обхода список географических точек для выполнения заказов.
+        """Returns a list of geographic points for order fulfillment,
+        ordered in the optimal traversal order.
         """
-        # Копируем фрейм с заказами
         orders = self.orders.copy()
         orders['coordinates_list'] = self.__get_map_coordinates()
-        # Получение списка обхода геоточек
         order_route = self.map_routing()
-        # Ранжирование заказов в порядке исполнения
         reindex_orders = orders.reindex(index=order_route)
 
         return reindex_orders
 
     def orderby_price(self) -> pd.DataFrame:
-        """Возвращает список заказов, отражированный в порядке
-        их оптимального обхода исходя из стоимости перевозки между точками.
+        """Returns a list of orders ordered on the
+        cost of transportation between points.
         """
-        # Копируем фрейм с заказами
         orders = self.orders.copy()
-        # Получение списка обхода геоточек
         order_route = self.price_routing()
-        # Ранжирование заказов в порядке исполнения
         reindex_orders = orders.reindex(index=order_route)
 
         return reindex_orders
@@ -142,7 +134,7 @@ class Optimizer:
 
 if __name__ == "__main__":
 
-    first_order = pd.DataFrame(
+    test_order = pd.DataFrame(
         {
             'address': [
                 'Воронеж, Труда, 59',
@@ -154,12 +146,8 @@ if __name__ == "__main__":
         }
     )
 
-    opt = Optimizer(first_order)
+    opt = Optimizer(test_order)
 
     ordered_map: pd.DataFrame = opt.orderby_map()
     print('Отранжировано по географическим координатам')
     print(ordered_map)
-
-    ordered_price: pd.DataFrame = opt.orderby_price()
-    print('Отранжировано по стоимости доставки')
-    print(ordered_price)

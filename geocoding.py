@@ -34,8 +34,8 @@ def geocoding(address: str) -> list:
     try:
         request = requests.request("POST", url, data=payload,
                                    headers=headers, timeout=3.0)
-    except requests.exceptions.ReadTimeout:
-        print('error: GeocodingTimeout')
+    except requests.exceptions.ReadTimeout as e:
+        print(f'error: ReadTimeout')
         request = None
 
     # Service request
@@ -68,7 +68,7 @@ def geocoding(address: str) -> list:
             print('error: Address not found or does not exist')
 
     else:
-        print('error: Request DaData code != 200')
+        print('error: Request DaData code != 200', request.text)
 
 
 if __name__ == "__main__":
