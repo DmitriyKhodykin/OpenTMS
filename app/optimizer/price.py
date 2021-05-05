@@ -6,7 +6,7 @@ API docs: https://dev.dellin.ru/api/calculation/calculator/
 import requests
 import json
 from auth import auth
-from geocoding import geocoding
+from optimizer.optimizer import geocoding
 
 
 def price(address_from: str, address_to: str, count: int = 1) -> float:
