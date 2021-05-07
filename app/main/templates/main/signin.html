@@ -1,0 +1,30 @@
+{% extends 'main/foundation.html' %}
+
+{% block title %}
+Авторизация
+{% endblock %}
+
+{% block content %}
+
+<main class="form-signin">
+    <form>
+        <div class="mt-5" align="middle">
+
+        <h1 class="h3 mb-3 fw-normal">Введите учетные данные</h1>
+
+        <div class="col-sm-3 mt-3">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Адрес почты</label>
+        </div>
+        <div class="col-sm-3 mt-3">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+            <label for="floatingPassword">Пароль</label>
+        </div>
+
+        <button class="btn btn-lg btn-primary mt-3" type="submit">Вход</button>
+
+        </div>
+    </form>
+</main>
+
+{% endblock %}

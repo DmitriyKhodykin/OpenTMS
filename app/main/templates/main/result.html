@@ -1,0 +1,40 @@
+{% extends 'main/foundation.html' %}
+
+{% block title %}
+Результат
+{% endblock %}
+
+{% block content %}
+
+<h3>Результат оптимизации</h3>>
+
+<div class="container">
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Order Id</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Order By Coordinates</th>
+            <th>Order By Distance</th>
+            <th>Order By Price</th>
+        <tr>
+        </thead>
+        <tbody>
+        {% for el in route %}
+        <tr>
+            <td>{{ el.order_id }}</td>
+            <td>{{ el.latitude }}</td>
+            <td>{{ el.longitude }}</td>
+            <td>{{ el.orderby_coordinates }}</td>
+            <td>{{ el.orderby_distance }}</td>
+            <td>{{ el.orderby_price }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+

@@ -1,10 +1,19 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from .models import Route
 
 
 def index(request):
     return render(request, 'main/index.html')
 
 
-def about(request):
-    return HttpResponse("<h4>We are strong!</h4>")
+def signin(request):
+    return render(request, 'main/signin.html')
+
+
+def result(request):
+    route = Route.objects.all()
+    return render(request, 'main/result.html', {'route': route})
+
+
+def info(request):
+    return render(request, 'main/info.html')
