@@ -1,5 +1,5 @@
 app/auth/
-.idea
+.idea/
 venv/
 __pycache__/
 test.py
