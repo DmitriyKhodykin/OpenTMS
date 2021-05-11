@@ -2,3 +2,8 @@ app/auth/
 venv/
 __pycache__/
 test.py
+
+# IntellijIdea files
+*.iml
+.idea
+out
