@@ -13,7 +13,7 @@ import requests         # HTTP-запросы
 from auth import auth   # Регистрационные данные
 
 
-def geocoding(address: str) -> list:
+def get_coordinates(address: str) -> list:
     """Return Latitude, longitude and Kladr 25-symbol street-code, e.g:
     [38.05, 41.06, 3600000100006660000000000].
     """
@@ -77,5 +77,5 @@ if __name__ == "__main__":
     ADDRESS = "воронеж труда 11"
 
     # Result: [51.6813317, 39.1823317, 3600000100009020000000000]
-    coordinates = geocoding(ADDRESS)
+    coordinates = get_coordinates(ADDRESS)
     print('Result:', coordinates)

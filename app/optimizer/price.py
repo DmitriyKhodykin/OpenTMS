@@ -6,7 +6,7 @@ API docs: https://dev.dellin.ru/api/calculation/calculator/
 import requests
 import json
 from auth import auth
-from optimizer.optimizer import geocoding
+from optimizer.optimizer import get_coordinates
 
 
 def price(address_from: str, address_to: str, count: int = 1) -> float:
@@ -16,10 +16,10 @@ def price(address_from: str, address_to: str, count: int = 1) -> float:
     """
     url = 'https://api.dellin.ru/v2/calculator.json'
 
-    derival_geocoding = geocoding(address_from)
+    derival_geocoding = get_coordinates(address_from)
     derival_street = derival_geocoding[2]
 
-    arrival_geocoding = geocoding(address_to)
+    arrival_geocoding = get_coordinates(address_to)
     arrival_street = arrival_geocoding[2]
 
     # Cargo parameters (static)

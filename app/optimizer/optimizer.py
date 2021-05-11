@@ -8,7 +8,7 @@ and search algorithms applicable to a range of optimization problems,
 both discrete and continuous.
 """
 
-from optimizer.geocoding import geocoding
+from optimizer.geocoding import get_coordinates
 from optimizer.price import price
 
 import pandas as pd
@@ -31,7 +31,7 @@ class Optimizer:
 
         try:
             for index, row in self.orders.iterrows():
-                lat_lng = geocoding(row['address'])
+                lat_lng = get_coordinates(row['address'])
                 coordinates: tuple = (
                     lat_lng[0],
                     lat_lng[1]

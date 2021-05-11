@@ -12,7 +12,7 @@ import json
 import requests
 
 from auth import auth
-from optimizer.optimizer import geocoding
+from .geocoding import get_coordinates
 
 
 def distance_mapbox(point_from: str, point_to: str,
@@ -25,9 +25,9 @@ def distance_mapbox(point_from: str, point_to: str,
         # - cycling
     """
     # Reversing Latitude and Longitude for MapBox
-    coordinates_from: list = geocoding(point_from)[0:2]
+    coordinates_from: list = get_coordinates(point_from)[0:2]
     geopoint_from: str = f'{coordinates_from[1]},{coordinates_from[0]}'  # Reverse order for MapBox
-    coordinates_to: list = geocoding(point_to)[0:2]
+    coordinates_to: list = get_coordinates(point_to)[0:2]
     geopoint_to: str = f'{coordinates_to[1]},{coordinates_to[0]}'
 
     request = requests.get(
