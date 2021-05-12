@@ -127,3 +127,10 @@ dmypy.json
 
 # Autentification data
 auth/
+.gitignore
+app/app/__pycache__/
+app/auth/
+app/main/__pycache__/
+app/main/migrations/__pycache__/
+app/optimizer/__pycache__/
+test.py
