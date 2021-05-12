@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f6272ce2-c241-4420-b8e2-27a64365fd3b" name="Default Changelist" comment="">
+    <list default="true" id="f6272ce2-c241-4420-b8e2-27a64365fd3b" name="Default Changelist" comment="Ку">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/optimizer/distance.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/optimizer/distance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/optimizer/geocoding.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/optimizer/geocoding.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/optimizer/optimizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/optimizer/optimizer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/optimizer/price.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/optimizer/price.py" afterDir="false" />
     </list>
@@ -34,7 +33,7 @@
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="settings.editor.selected.configurable" value="settings.github" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -165,8 +164,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.optimizer (1)" />
-        <item itemvalue="Python.test" />
         <item itemvalue="Python.distance" />
+        <item itemvalue="Python.test" />
         <item itemvalue="Python.geocoding (1)" />
         <item itemvalue="Python.optimizer" />
       </list>
@@ -281,7 +280,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620709800954</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Module path">
+      <created>1620711433423</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1620711433423</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -307,17 +313,7 @@
     <MESSAGE value="Main page content is added" />
     <MESSAGE value="DB is added" />
     <MESSAGE value="idea is added" />
-    <option name="LAST_COMMIT_MESSAGE" value="idea is added" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/manage.py</url>
-          <line>2</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Module path" />
+    <option name="LAST_COMMIT_MESSAGE" value="Module path" />
   </component>
 </project>

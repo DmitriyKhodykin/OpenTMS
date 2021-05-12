@@ -8,8 +8,8 @@ and search algorithms applicable to a range of optimization problems,
 both discrete and continuous.
 """
 
-from optimizer.geocoding import get_coordinates
-from optimizer.price import price
+from .geocoding import get_coordinates
+from .price import get_price
 
 import pandas as pd
 import six
@@ -54,7 +54,7 @@ class Optimizer:
         for index_from, address_from in self.orders.iterrows():
             for index_to, address_to in self.orders.iterrows():
                 if address_to['address'] != address_from['address']:
-                    ltl_price = price(address_from['address'], address_to['address'])
+                    ltl_price = get_price(address_from['address'], address_to['address'])
                     triplet = (index_from, index_to, ltl_price)
                     triplets.append(triplet)
 

@@ -6,10 +6,10 @@ API docs: https://dev.dellin.ru/api/calculation/calculator/
 import requests
 import json
 from auth import auth
-from optimizer.optimizer import get_coordinates
+from .optimizer import get_coordinates
 
 
-def price(address_from: str, address_to: str, count: int = 1) -> float:
+def get_price(address_from: str, address_to: str, count: int = 1) -> float:
     """ Return Delivery price in RUB.
     address: 'Воронеж Остужева 10'
     count = number of packages
@@ -143,7 +143,7 @@ def price(address_from: str, address_to: str, count: int = 1) -> float:
 
 if __name__ == '__main__':
 
-    ltl_price = price(
+    ltl_price = get_price(
         'Воронеж Труда 59',
         'Москва Волоколамское 39'
     )
