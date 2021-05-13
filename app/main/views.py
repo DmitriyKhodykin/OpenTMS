@@ -11,7 +11,7 @@ def signin(request):
 
 
 def result(request):
-    route = Route.objects.all()
+    route = Route.objects.order_by('orderby_coordinates')
     return render(request, 'main/result.html', {'route': route})
 
 

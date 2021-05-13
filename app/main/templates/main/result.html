@@ -10,6 +10,7 @@
 
 <div class="container">
 
+    {% if route %}
     <table class="table">
         <thead>
         <tr>
@@ -21,7 +22,9 @@
             <th>Order By Price</th>
         <tr>
         </thead>
+
         <tbody>
+
         {% for el in route %}
         <tr>
             <td>{{ el.order_id }}</td>
@@ -32,8 +35,14 @@
             <td>{{ el.orderby_price }}</td>
         </tr>
         {% endfor %}
+    {% else %}
+        <p>Записи отсутствуют</p>
+
+    {% endif %}
+
         </tbody>
     </table>
+
 </div>
 
 {% endblock %}
