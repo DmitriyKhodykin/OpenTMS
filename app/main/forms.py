@@ -9,8 +9,7 @@ class OrderForm(ModelForm):
         widgets = {
             "address": TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Воронеж Патриотов 20',
-                'value': '""'
+                'placeholder': 'Воронеж Патриотов 20'
             }),
             "cargo": TextInput(attrs={
                 'class': 'form-control',
