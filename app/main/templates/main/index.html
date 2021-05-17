@@ -17,24 +17,26 @@
 <form class="needs-validation" novalidate method="post">
     {% csrf_token %}
     <div class="row g-1">
-        <div class="col-sm-6">
-            <label class="form-label">Адресс доставки</label>
-            <input type="text" class="form-control" placeholder="Воронеж Патриотов 20" value="" required>
+        <label class="form-label">Адресс доставки</label>
+        <div class="col-sm-3">
+            {{ form.address }}
         </div>
 
+        <label class="form-label">Груз</label>
         <div class="col-sm-3">
-            <label class="form-label">Груз</label>
-            <input type="text" class="form-control" placeholder="Пищевые ингредиенты" value="" required>
+            {{ form.cargo }}
         </div>
 
+        <label class="form-label">Вес, кг</label>
         <div class="col-sm-3">
-            <label class="form-label">Вес, кг</label>
-            <input type="text" class="form-control" placeholder="900" value="" required>
+            {{ form.weight }}
         </div>
     </div>
+
     <div class="col-sm-6">
         <button type="submit" class="btn btn-lg btn-primary mt-3">Сформировать</button>
     </div>
+    <span>{{ error }}</span>
 
 </form>
 
