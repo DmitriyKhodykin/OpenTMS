@@ -15,6 +15,7 @@
 </div>
 
 <form class="needs-validation" novalidate method="post">
+    {% csrf_token %}
     <div class="row g-1">
         <div class="col-sm-6">
             <label class="form-label">Адресс доставки</label>

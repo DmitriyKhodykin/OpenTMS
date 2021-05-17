@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f6272ce2-c241-4420-b8e2-27a64365fd3b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/main/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/main/templates/main/foundation.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/main/templates/main/foundation.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/main/templates/main/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/main/templates/main/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/main/templates/main/result.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/main/templates/main/result.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/main/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -317,7 +313,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620913986193</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="New forms">
+      <created>1621254763630</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1621254763630</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -346,6 +349,7 @@
     <MESSAGE value="Ку" />
     <MESSAGE value="Python stack ignore" />
     <MESSAGE value="Check rule for empty db is added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Check rule for empty db is added" />
+    <MESSAGE value="New forms" />
+    <option name="LAST_COMMIT_MESSAGE" value="New forms" />
   </component>
 </project>
