@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f6272ce2-c241-4420-b8e2-27a64365fd3b" name="Default Changelist" comment="">
+    <list default="true" id="f6272ce2-c241-4420-b8e2-27a64365fd3b" name="Default Changelist" comment="git cache cleared">
+      <change afterPath="$PROJECT_DIR$/app/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/main/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/main/templates/main/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/main/templates/main/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/main/templates/main/result.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/main/templates/main/result.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -354,7 +355,14 @@
       <option name="project" value="LOCAL" />
       <updated>1621334842659</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="git cache cleared">
+      <created>1621335865585</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1621335865585</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -386,6 +394,7 @@
     <MESSAGE value="New forms" />
     <MESSAGE value="csrf is added" />
     <MESSAGE value="Forms and views are bounded" />
-    <option name="LAST_COMMIT_MESSAGE" value="Forms and views are bounded" />
+    <MESSAGE value="git cache cleared" />
+    <option name="LAST_COMMIT_MESSAGE" value="git cache cleared" />
   </component>
 </project>

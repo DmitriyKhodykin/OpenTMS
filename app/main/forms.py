@@ -5,8 +5,12 @@ from django.forms import ModelForm, TextInput
 class OrderForm(ModelForm):
     class Meta:
         model = Orders
-        fields = ["address", "cargo", "weight"]
+        fields = ["order_id", "address", "cargo", "weight"]
         widgets = {
+            "order_id": TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'RC000001'
+            }),
             "address": TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Воронеж Патриотов 20'
