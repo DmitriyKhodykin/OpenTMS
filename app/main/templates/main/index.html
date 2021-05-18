@@ -10,7 +10,7 @@
     <h2>Заказ доставки сборного груза</h2>
     <p class="lead">
         На этой странице вы можете сформировать заказ на доставку сборного груза с
-        учетом оптимизации LTL-рейсов.
+        учетом оптимизации LTL-рейсов
     </p>
 </div>
 
@@ -18,6 +18,11 @@
     {% csrf_token %}
 
     <div class="row g-1">
+        <label class="form-label">Код заказа</label>
+        <div class="col-sm-3">
+            {{ form.order_id }}
+        </div>
+
         <label class="form-label">Адресс доставки</label>
         <div class="col-sm-3">
             {{ form.address }}
