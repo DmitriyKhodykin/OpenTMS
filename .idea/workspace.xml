@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f6272ce2-c241-4420-b8e2-27a64365fd3b" name="Default Changelist" comment="git cache cleared">
-      <change afterPath="$PROJECT_DIR$/app/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/main/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/main/templates/main/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/main/templates/main/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/main/templates/main/result.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/main/templates/main/result.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
