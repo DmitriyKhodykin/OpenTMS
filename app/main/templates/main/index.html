@@ -18,30 +18,32 @@
     {% csrf_token %}
 
     <div class="row g-1">
-        <label class="form-label">Код заказа</label>
+
         <div class="col-sm-3">
+            <label class="form-label">Код заказа</label>
             {{ form.order_id }}
         </div>
 
-        <label class="form-label">Адресс доставки</label>
         <div class="col-sm-3">
+            <label class="form-label">Адресс доставки</label>
             {{ form.address }}
         </div>
 
-        <label class="form-label">Груз</label>
         <div class="col-sm-3">
+            <label class="form-label">Груз</label>
             {{ form.cargo }}
         </div>
 
-        <label class="form-label">Вес, кг</label>
         <div class="col-sm-3">
+            <label class="form-label">Вес, кг</label>
             {{ form.weight }}
+        </div>
+
+        <div class="py-5 text-center">
+            <button type="submit" class="btn btn-lg btn-primary mt-3">Сформировать</button>
         </div>
     </div>
 
-    <div class="col-sm-6">
-        <button type="submit" class="btn btn-lg btn-primary mt-3">Сформировать</button>
-    </div>
     <span>{{ error }}</span>
 
 </form>
