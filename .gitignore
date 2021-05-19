@@ -137,3 +137,4 @@ test.py
 
 #IDE metadata
 **.idea/**
+.idea/workspace.xml
