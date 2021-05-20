@@ -23,7 +23,7 @@ class Optimizer:
     def __init__(self, orders: pd.DataFrame):
         self.orders = orders
 
-    def __get_map_coordinates(self) -> list:
+    def _get_map_coordinates(self) -> list:
         """Returns a list of geographic locations from freight orders.
         """
 
@@ -42,7 +42,7 @@ class Optimizer:
 
         return coordinates_list
 
-    def __get_price_triplets(self) -> list:
+    def _get_price_triplets(self) -> list:
         """Returns a list of triplets:
         1) Geographic point index 1,
         2) Geographic point index 2,
@@ -64,7 +64,7 @@ class Optimizer:
         """Returns the best path to traverse points given by geo-coordinates.
         """
         # Lat and Lon of each order
-        geo_points = self.__get_map_coordinates()
+        geo_points = self._get_map_coordinates()
         # Sales travelling instance
         fitness_coordinates = mlrose.TravellingSales(coords=geo_points)
         # Fit problem
@@ -89,7 +89,7 @@ class Optimizer:
         """Returns the best path to traverse geopoints based on
         the cost between each of these pairs.
         """
-        triplets = self.__get_price_triplets()
+        triplets = self._get_price_triplets()
         # Sales travelling instance
         fitness_prices = mlrose.TravellingSales(distances=triplets)
         # Fit problem
@@ -115,7 +115,7 @@ class Optimizer:
         ordered in the optimal traversal order.
         """
         orders = self.orders.copy()
-        orders['coordinates_list'] = self.__get_map_coordinates()
+        orders['coordinates_list'] = self._get_map_coordinates()
         order_route = self.map_routing()
         reindex_orders = orders.reindex(index=order_route)
 
