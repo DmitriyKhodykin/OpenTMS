@@ -11,7 +11,7 @@ def index(request):
         form = OrderForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('result')
+            return redirect('success')
         else:
             error = 'Проверьте корректность заполнения формы'
 
@@ -36,3 +36,7 @@ def result(request):
 
 def info(request):
     return render(request, 'main/info.html')
+
+
+def success(request):
+    return render(request, 'main/success.html')

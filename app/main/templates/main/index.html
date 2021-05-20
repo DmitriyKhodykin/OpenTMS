@@ -19,30 +19,35 @@
 
     <div class="row g-1">
 
-        <div class="col-sm-6">
-            <label class="form-label">Адресс доставки</label>
-            {{ form.address }}
+        <div class="col-sm-4">
+            <label class="form-label">Дата доставки</label>
+            {{ form.arrival_date }}
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <label class="form-label">Груз</label>
             {{ form.cargo }}
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <label class="form-label">Вес, кг</label>
             {{ form.weight }}
+        </div>
+
+        <div class="col-sm-8">
+            <label class="form-label">Адресс доставки</label>
+            {{ form.address }}
+        </div>
+
+        <div class="col-sm-4">
+            <label class="form-label">Пользователь</label>
+            {{ form.user }}
         </div>
 
     </div>
 
     <div class="py-5 text-center">
         <button type="submit" class="btn btn-lg btn-primary mt-3">Сформировать</button>
-    </div>
-
-    <div>
-        <input type="file" name="myfile">
-        <button type="submit">Загрузить .xlsx</button>
     </div>
 
     <span>{{ error }}</span>

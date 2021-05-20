@@ -4,10 +4,7 @@ from .models import Orders, Route
 
 class OrdersAdmin(admin.ModelAdmin):
     """Details for Orders admin panel"""
-    list_display = ('address', 'cargo', 'weight')
-
-    class Meta:
-        verbose_name = ('Адресс', 'Груз', 'Вес')
+    list_display = ('arrival_date', 'address', 'cargo', 'weight')
 
 
 class RouteAdmin(admin.ModelAdmin):
