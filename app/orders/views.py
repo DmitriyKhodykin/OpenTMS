@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect
-from .models import Route
 from .forms import OrderForm
 
 
-def index(request):
+def orders(request):
 
     error = ''
 
@@ -27,11 +26,6 @@ def index(request):
 
 def signin(request):
     return render(request, 'orders/signin.html')
-
-
-def result(request):
-    route = Route.objects.order_by('orderby_coordinates')
-    return render(request, 'orders/result.html', {'route': route})
 
 
 def info(request):
