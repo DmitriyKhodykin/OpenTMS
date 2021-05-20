@@ -22,3 +22,5 @@ urlpatterns = [
     path('/orders', include('orders.urls')),
     path('/optimizer', include('optimizer.urls'))
 ]
+
+# https://docs.djangoproject.com/en/3.2/intro/tutorial01/
