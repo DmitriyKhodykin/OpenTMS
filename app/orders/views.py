@@ -22,21 +22,21 @@ def index(request):
         'error': error
     }
 
-    return render(request, 'main/index.html', context)
+    return render(request, 'orders/index.html', context)
 
 
 def signin(request):
-    return render(request, 'main/signin.html')
+    return render(request, 'orders/signin.html')
 
 
 def result(request):
     route = Route.objects.order_by('orderby_coordinates')
-    return render(request, 'main/result.html', {'route': route})
+    return render(request, 'orders/result.html', {'route': route})
 
 
 def info(request):
-    return render(request, 'main/info.html')
+    return render(request, 'orders/info.html')
 
 
 def success(request):
-    return render(request, 'main/success.html')
+    return render(request, 'orders/success.html')

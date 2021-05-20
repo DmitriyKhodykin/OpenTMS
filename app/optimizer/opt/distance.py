@@ -12,7 +12,7 @@ import json
 import requests
 
 from auth import auth
-from .geocoding import get_coordinates
+from optimizer.geocoding import get_coordinates
 
 
 def distance_mapbox(point_from: str, point_to: str,

@@ -1,4 +1,4 @@
-{% extends 'main/foundation.html' %}
+{% extends 'orders/foundation.html' %}
 
 {% block title %}
 Результат оптимизации
@@ -19,12 +19,10 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Код заказа</th>
+            <th>Адрес</th>
             <th>Широта</th>
             <th>Долгота</th>
             <th>Порядок по координатам</th>
-            <th>Порядок по расстоянию</th>
-            <th>Порядок по стоимости</th>
         <tr>
         </thead>
 
@@ -32,12 +30,10 @@
 
         {% for el in route %}
         <tr>
-            <td>{{ el.order_id }}</td>
+            <td>{{ el.address }}</td>
             <td>{{ el.latitude }}</td>
             <td>{{ el.longitude }}</td>
             <td>{{ el.orderby_coordinates }}</td>
-            <td>{{ el.orderby_distance }}</td>
-            <td>{{ el.orderby_price }}</td>
         </tr>
         {% endfor %}
     {% else %}

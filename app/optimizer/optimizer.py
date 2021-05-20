@@ -8,8 +8,8 @@ and search algorithms applicable to a range of optimization problems,
 both discrete and continuous.
 """
 
-from .geocoding import get_coordinates
-from .price import get_price
+from optimizer.geocoding import get_coordinates
+from optimizer.opt.price import get_price
 
 import pandas as pd
 import six
