@@ -24,8 +24,8 @@ def orders(request):
     return render(request, 'orders/index.html', context)
 
 
-def signin(request):
-    return render(request, 'orders/signin.html')
+# def signin(request):
+#     return render(request, 'orders/signin.html')
 
 
 def info(request):
