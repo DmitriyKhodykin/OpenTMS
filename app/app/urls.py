@@ -19,8 +19,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('services.urls')),
-    path('/orders', include('orders.urls')),
-    path('/optimizer', include('optimizer.urls'))
+    path('orders/', include('orders.urls')),
+    path('optimizer/', include('optimizer.urls'))
 ]
-
-# https://docs.djangoproject.com/en/3.2/intro/tutorial01/

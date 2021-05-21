@@ -24,13 +24,5 @@ def orders(request):
     return render(request, 'orders/index.html', context)
 
 
-# def signin(request):
-#     return render(request, 'orders/signin.html')
-
-
-def info(request):
-    return render(request, 'orders/info.html')
-
-
 def success(request):
     return render(request, 'orders/success.html')
