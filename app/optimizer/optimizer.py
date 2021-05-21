@@ -23,10 +23,28 @@ class Optimizer:
     def __init__(self, orders: pd.DataFrame):
         self.orders = orders
 
+    def orderby_map(self) -> pd.DataFrame:
+        """Returns a list of geographic points for order fulfillment,
+        ordered in the optimal traversal order.
+        """
+        orders = self.orders.copy()
+        orders['coordinates_list'] = self._get_map_coordinates()
+        order_route = self._map_routing()
+        reindex_orders = orders.reindex(index=order_route)
+        return reindex_orders
+
+    def orderby_price(self) -> pd.DataFrame:
+        """Returns a list of orders ordered on the
+        cost of transportation between points.
+        """
+        orders = self.orders.copy()
+        order_route = self._price_routing()
+        reindex_orders = orders.reindex(index=order_route)
+        return reindex_orders
+
     def _get_map_coordinates(self) -> list:
         """Returns a list of geographic locations from freight orders.
         """
-
         coordinates_list: list = []
 
         try:
@@ -60,7 +78,7 @@ class Optimizer:
 
         return triplets
 
-    def map_routing(self) -> list:
+    def _map_routing(self) -> list:
         """Returns the best path to traverse points given by geo-coordinates.
         """
         # Lat and Lon of each order
@@ -85,7 +103,7 @@ class Optimizer:
 
         return best_state
 
-    def price_routing(self) -> list:
+    def _price_routing(self) -> list:
         """Returns the best path to traverse geopoints based on
         the cost between each of these pairs.
         """
@@ -110,38 +128,17 @@ class Optimizer:
 
         return best_state
 
-    def orderby_map(self) -> pd.DataFrame:
-        """Returns a list of geographic points for order fulfillment,
-        ordered in the optimal traversal order.
-        """
-        orders = self.orders.copy()
-        orders['coordinates_list'] = self._get_map_coordinates()
-        order_route = self.map_routing()
-        reindex_orders = orders.reindex(index=order_route)
-
-        return reindex_orders
-
-    def orderby_price(self) -> pd.DataFrame:
-        """Returns a list of orders ordered on the
-        cost of transportation between points.
-        """
-        orders = self.orders.copy()
-        order_route = self.price_routing()
-        reindex_orders = orders.reindex(index=order_route)
-
-        return reindex_orders
-
 
 if __name__ == "__main__":
 
     test_order = pd.DataFrame(
         {
             'address': [
-                'Воронеж, Труда, 59',
-                'Воронеж, Баррикадная, 39',
-                'Воронеж, Космонавтов, 10',
-                'Воронеж, Труда, 1',
-                'Воронеж, Ленина, 43'
+                'Воронеж Труда 59',
+                'Воронеж Баррикадная 39',
+                'Воронеж Космонавтов 10',
+                'Воронеж Труда 1',
+                'Воронеж Ленина 43'
             ]
         }
     )
