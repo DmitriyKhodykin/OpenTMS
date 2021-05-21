@@ -38,3 +38,5 @@ class Route(models.Model):
         """Save Orders optimisation results into the model
         """
         pass
+
+# https://docs.djangoproject.com/en/3.2/ref/models/instances/
