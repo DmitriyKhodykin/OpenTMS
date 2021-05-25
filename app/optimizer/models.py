@@ -5,7 +5,8 @@ from orders.models import Orders
 
 from optimizer.opt.optimizer import Optimizer
 
-# def _optimization_of_orders(self):
+
+# def _optimization_of_orders():
 #     """Optimization of orders list using Optimizer
 #     """
 #     fetch_all_orders = model_to_dict(Orders.objects.all())
@@ -27,16 +28,3 @@ class Route(models.Model):
     class Meta:
         verbose_name = 'Маршрут'
         verbose_name_plural = 'Маршруты'
-
-    @classmethod
-    def create(cls, title):
-        """Create """
-        pass
-
-    def save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None):
-        """Save Orders optimisation results into the model
-        """
-        pass
-
-# https://docs.djangoproject.com/en/3.2/ref/models/instances/

@@ -15,6 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import SimpleRouter
+
+from orders.views import OrderView
+
+# API urls
+router = SimpleRouter()
+router.register('api/orders', OrderView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -22,3 +29,5 @@ urlpatterns = [
     path('orders/', include('orders.urls')),
     path('optimizer/', include('optimizer.urls'))
 ]
+
+urlpatterns += router.urls

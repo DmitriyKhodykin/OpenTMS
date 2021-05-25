@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from .models import Route
+
+from optimizer.models import Route
 
 
 def result(request):

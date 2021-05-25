@@ -1,5 +1,9 @@
 from django.shortcuts import render, redirect
+from rest_framework.viewsets import ModelViewSet
+
 from .forms import OrderForm
+from .models import Orders
+from .serializers import OrderSerializer
 
 
 def orders(request):
@@ -26,3 +30,8 @@ def orders(request):
 
 def success(request):
     return render(request, 'orders/success.html')
+
+
+class OrderView(ModelViewSet):
+    queryset = Orders.objects.all()
+    serializer_class = OrderSerializer
