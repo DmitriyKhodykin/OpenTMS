@@ -2,7 +2,8 @@
 Unit tests for optimizer module
 """
 
-from django.test import TestCase
+from unittest import TestCase
+
 import pandas as pd
 
 from optimizer.opt.optimizer import Optimizer
