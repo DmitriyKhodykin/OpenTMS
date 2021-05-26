@@ -14,7 +14,7 @@ class OptimizerTestCase(TestCase):
     def test_map_ordering(self):
         """Test case for ordering by map"""
 
-        test_order = pd.DataFrame(
+        order = pd.DataFrame(
             {
                 'address': [
                     'Воронеж Труда 59',
@@ -27,6 +27,6 @@ class OptimizerTestCase(TestCase):
 
         reference: list = [2, 1, 4, 3, 0]
 
-        opt = Optimizer(test_order)
+        opt = Optimizer(order)
         result = list(opt.orderby_map().index)
         self.assertEqual(reference, result)
