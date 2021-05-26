@@ -130,9 +130,9 @@ auth/
 .gitignore
 app/app/__pycache__/
 app/auth/
-app/main/__pycache__/
-app/main/migrations/__pycache__/
-app/optimizer/__pycache__/
+app/orders/__pycache__/
+app/orders/migrations/__pycache__/
+app/optimizer/opt/__pycache__/
 test.py
 
 #IDE metadata

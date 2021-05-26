@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Заказ доставки
+{% endblock %}
+
+{% block content %}
+
+<div class="py-5 text-center">
+    <h2>Заказ доставки сборного груза</h2>
+    <p class="lead">
+        На этой странице вы можете сформировать заказ на доставку сборного груза с
+        учетом оптимизации LTL-рейсов
+    </p>
+</div>
+
+<form class="needs-validation" novalidate method="post">
+    {% csrf_token %}
+
+    <div class="row g-1">
+
+        <div class="col-sm-4">
+            <label class="form-label">Дата доставки</label>
+            {{ form.arrival_date }}
+        </div>
+
+        <div class="col-sm-4">
+            <label class="form-label">Груз</label>
+            {{ form.cargo }}
+        </div>
+
+        <div class="col-sm-4">
+            <label class="form-label">Вес, кг</label>
+            {{ form.weight }}
+        </div>
+
+        <div class="col-sm-8">
+            <label class="form-label">Адресс доставки</label>
+            {{ form.address }}
+        </div>
+
+        <div class="col-sm-4">
+            <label class="form-label">Пользователь</label>
+            {{ form.user }}
+        </div>
+
+    </div>
+
+    <div class="py-5 text-center">
+        <button type="submit" class="btn btn-lg btn-primary mt-3">Сформировать</button>
+    </div>
+
+    <span>{{ error }}</span>
+
+</form>
+
+<script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="form-validation.js"></script>
+
+{% endblock %}
