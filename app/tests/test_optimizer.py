@@ -3,7 +3,6 @@ Unit tests for optimizer module
 """
 
 from unittest import TestCase
-
 import pandas as pd
 
 from optimizer.opt.optimizer import Optimizer
