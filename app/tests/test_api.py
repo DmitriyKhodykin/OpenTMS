@@ -1,4 +1,5 @@
 from django.urls import reverse
+from rest_framework import status
 from rest_framework.test import APITestCase
 
 from orders.models import Orders
@@ -20,6 +21,7 @@ class OrderApiTest(APITestCase):
         )
 
         url = reverse('orders-list')
-        response = self.client.get(url).data
+        response = self.client.get(url)
         serializer_data = OrderSerializer([order], many=True).data
-        self.assertEqual(serializer_data, response)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(serializer_data, response.data)
