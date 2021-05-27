@@ -1,20 +1,4 @@
-import pandas as pd
 from django.db import models
-from django.forms.models import model_to_dict
-from orders.models import Orders
-
-from optimizer.opt.optimizer import Optimizer
-
-
-# def _optimization_of_orders():
-#     """Optimization of orders list using Optimizer
-#     """
-#     fetch_all_orders = model_to_dict(Orders.objects.all())
-#     orders = pd.DataFrame(fetch_all_orders, columns=['arrival_date', 'address',
-#                                                      'cargo', 'weight', 'user'])
-#     opt = Optimizer(orders)
-#     result = opt.orderby_map()
-#     return result
 
 
 class Route(models.Model):
