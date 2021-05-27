@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Route(models.Model):
-    """Results from optimization module
+    """Results from optimization module.
     """
     address = models.CharField('address', max_length=256)
     latitude = models.FloatField('latitude', default=0.0)
